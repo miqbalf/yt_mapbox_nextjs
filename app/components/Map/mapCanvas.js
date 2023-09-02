@@ -4,16 +4,11 @@ import { Map } from 'react-map-gl'
 
 import { Marker, Source, Layer } from 'react-map-gl'
 
-const geoJsonExample = {
-    type: 'FeatureCollection',
-    id: 0,
-    features: [
-        {
-            type: 'Feature', geometry: { type: 'Point', 
-                                        coordinates: [102, -3]}
-        }
-    ]
-};
+import { geoJsonExample } from '../data/geojsonExample'
+import { tilesExample } from '../data/tileExample'
+import { WMSExample } from '../data/geoserver/wmsExample'
+
+import CONFIG from '../../config'
 
 const layerStylePoint = {
     id: 'example_layer',
@@ -33,15 +28,34 @@ const layerStyleWMS = {
 const MapCanvas = () => {
     return (
         <Map
-            mapboxAccessToken="pk.eyJ1IjoibXVoZmlyZGF1c2lxYmFsIiwiYSI6ImNrZDVqMmVtczFmNG4ycm8zNjQ3bTZnanIifQ.rY8EemTRu60WjZrXH-oxdQ"
+            mapboxAccessToken={CONFIG.API_MAPBOX}
             initialViewState={{
-                longitude: 102.4,
-                latitude: -2,
-                zoom: 6
+                longitude: -103,
+                latitude: 44,
+                zoom: 4
             }}
             style={{ width: '100vw', height: '100vh' }}
             mapStyle="mapbox://styles/mapbox/streets-v9"
         >
+            <Marker key='marker_example' longitude={103} latitude={-1} color='red' >
+            </Marker>
+
+
+            <Source
+             key= 'example_wms'
+                type = 'raster'
+                tiles={tilesExample}
+                tileSize={256}
+
+            >
+            
+                 <Layer 
+                    {...layerStyleWMS}
+                    layout={{visibility: 'visible'}}
+                 >
+
+                 </Layer>
+            </Source>
 
             <Source key='example_source' 
                     type = 'geojson' 
@@ -66,29 +80,27 @@ const MapCanvas = () => {
                     >
 
                 </Layer>
-
-
-                
             </Source>
 
             <Source
-             key= 'example_wms'
+             key= 'example_wms_geoserver'
                 type = 'raster'
-                tiles={[' http://tile.openstreetmap.org/{z}/{x}/{y}.png']}
+                tiles={WMSExample}
                 tileSize={256}
 
             >
             
                  <Layer 
-                    {...layerStyleWMS}
+                    id = 'example_wms_geoserver'
+                    type = 'raster'
+                    paint = {{}}
                     layout={{visibility: 'visible'}}
                  >
 
                  </Layer>
             </Source>
+            
 
-            <Marker key='marker_example' longitude={103} latitude={-1} color='red' >
-            </Marker>
         </Map>
 
     )
