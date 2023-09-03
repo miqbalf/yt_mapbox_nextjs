@@ -25,28 +25,32 @@ const layerStylePoint = {
 const layerStyleWMS = {
     id: 'example_wms',
     type: 'raster',
-    paint : {}
+    paint: {}
 }
 
 const layerStylePolygon = {
     "id": "example_wfs",
     "type": "fill",
     "paint": {
-      "fill-color": "#00ffff"
+        "fill-color": "#00ffff"
     }
 }
 
-const geoJSONConstructor = ''
-
 const MapCanvas = () => {
 
-    const [data, setData ] = useState(null)
+    const [data, setData] = useState(null)
 
-    useEffect (async () =>  {
-        const responseData = await requestWFS();
-        setData(responseData)
-
-    }, [] )
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const responseData = await requestWFS();
+                setData(responseData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     if (!data) {
         return null
@@ -70,25 +74,25 @@ const MapCanvas = () => {
 
 
             <Source
-             key= 'example_wms'
-                type = 'raster'
+                key='example_wms'
+                type='raster'
                 tiles={tilesExample}
                 tileSize={256}
 
             >
-            
-                 <Layer 
-                    {...layerStyleWMS}
-                    layout={{visibility: 'visible'}}
-                 >
 
-                 </Layer>
+                <Layer
+                    {...layerStyleWMS}
+                    layout={{ visibility: 'visible' }}
+                >
+
+                </Layer>
             </Source>
 
-            <Source key='example_source' 
-                    type = 'geojson' 
-                    data = {geoJsonExample}
-                    >
+            <Source key='example_source'
+                type='geojson'
+                data={geoJsonExample}
+            >
                 {/*
                 <Layer
                     id = 'example_layer'
@@ -104,40 +108,38 @@ const MapCanvas = () => {
 
                 <Layer
                     {...layerStylePoint}
-                    layout = {{visibility: 'visible'}}
-                    >
+                    layout={{ visibility: 'visible' }}
+                >
 
                 </Layer>
             </Source>
 
             <Source
-             key= 'example_wms_geoserver'
-                type = 'raster'
+                key='example_wms_geoserver'
+                type='raster'
                 tiles={WMSExample}
                 tileSize={256}
 
             >
-            
-                 <Layer 
-                    id = 'example_wms_geoserver'
-                    type = 'raster'
-                    paint = {{}}
-                    layout={{visibility: 'visible'}}
-                 >
 
-                 </Layer>
-            </Source>
-
-            <Source  
-                key = 'example_wfs_source'
-                type = 'geojson'
-                data = {data}
+                <Layer
+                    id='example_wms_geoserver'
+                    type='raster'
+                    paint={{}}
+                    layout={{ visibility: 'visible' }}
                 >
-                 <Layer {...layerStylePolygon}>
 
-                 </Layer>
+                </Layer>
             </Source>
-            
+
+            {data && (
+                <Source key='example_wfs_source' type='geojson' data={data}>
+                    <Layer {...layerStylePolygon} 
+                               layout={{ visibility: 'visible' }}
+                    />
+                </Source>
+            )}
+
 
         </Map>
 

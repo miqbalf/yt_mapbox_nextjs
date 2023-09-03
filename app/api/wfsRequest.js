@@ -23,7 +23,7 @@ const REQUEST_PARAMS = {
 //const wfsUrl = encodedUrl
 
 const requestWFS = async () => {
-  try {
+  
     // Fetch WFS data from GeoServer
     const wfsResponse = await axios.get(`${CONFIG.BASE_URL_BACKEND}/geoserver/ows`, {
       params: REQUEST_PARAMS,
@@ -31,9 +31,6 @@ const requestWFS = async () => {
     //console.log(wfsResponse.data)
     return wfsResponse.data
     
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
 };
 
 export default requestWFS;
