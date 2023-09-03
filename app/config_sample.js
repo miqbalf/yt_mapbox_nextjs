@@ -1,5 +1,9 @@
 const CONFIG = {
-    API_MAPBOX : "YOUR_MAPBOX_TOKEN"
+    API_MAPBOX : "YOUR_MAPBOX_TOKEN",
+    BASE_URL_BACKEND: 'http://192.168.56.5',
+    LAYER_WMS_EXAMPLE: 'geonode:us_states_dd12ca07117989e94d85bf9e226532fe',
+    LAYER_WFS_EXAMPLE: 'geonode:us_states_dd12ca07117989e94d85bf9e226532fe',
+    GEOSERVER_TOKEN: 'GEOSERVER_TOKEN'
 }
 
 export default CONFIG

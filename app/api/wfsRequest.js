@@ -1,6 +1,9 @@
-const service = 'WFS';
-const outputFormat = 'json';
-const access_token = 'HSBXhcQT6afVETQ43FJVw66lQpGtPm';
+import axios from "axios";
+import CONFIG from "../config";
+
+//const service = 'WFS';
+//const outputFormat = 'json';
+//const access_token = 'HSBXhcQT6afVETQ43FJVw66lQpGtPm';
 
 //const encodedUrl = `/geoserver/ows?service=${encodeURIComponent(service)}&outputFormat=${encodeURIComponent(outputFormat)}&access_token=${encodeURIComponent(access_token)}`;
 
@@ -9,39 +12,28 @@ const REQUEST_PARAMS = {
     //maxFeatures: 250,
     request: 'GetFeature',
     service: 'WFS',
-    typeName: 'geonode:us_states_dd12ca07117989e94d85bf9e226532fed01282f71927a',
+    typeName: CONFIG.LAYER_WFS_EXAMPLE,
     version: '1.1.0',
-    //access_token: 'HSBXhcQT6afVETQ43FJVw66lQpGtPm',
+    //access_token: CONFIG.GEOSERVER_TOKEN,
   };
 
-const params = new URLSearchParams(REQUEST_PARAMS).toString()
+//const params = new URLSearchParams(REQUEST_PARAMS).toString()
 
-const wfsUrl = `https://stable.demo.geonode.org/geoserver/ows?${params}`; 
+//const wfsUrl = `http://192.168.56.5/geoserver/ows?${params}`; 
 //const wfsUrl = encodedUrl
 
+const requestWFS = async () => {
+  try {
+    // Fetch WFS data from GeoServer
+    const wfsResponse = await axios.get(`${CONFIG.BASE_URL_BACKEND}/geoserver/ows`, {
+      params: REQUEST_PARAMS,
+    });
+    //console.log(wfsResponse.data)
+    return wfsResponse.data
+    
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
 
-const requestWFS = () => {
-  fetch(wfsUrl, {
-  method: 'GET', // Use the appropriate HTTP method (GET, POST, etc.)
-  headers: {
-    'Content-Type': 'application/json', // Set the content type as needed
-    // Add any other headers if required
-  },
-})
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json(); // Parse the JSON response
-  })
-  .then((data) => {
-    // Use the JSON data as needed
-    console.log(data);
-  })
-  .catch((error) => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
-
-}
-
-export {requestWFS}
+export default requestWFS;

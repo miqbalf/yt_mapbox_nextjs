@@ -1,11 +1,13 @@
+import CONFIG from "@/app/config";
+
 const REQUEST_PARAMS = {
     SERVICE: 'WMS',
     VERSION: '1.3.0',
     REQUEST: 'GetMap',
     FORMAT: 'image/png',
     TRANSPARENT: true,
-    STYLES: 'geonode:us_states_dd12ca07117989e94d85bf9e226532fed01282f71927a',
-    LAYERS: 'geonode:us_states_dd12ca07117989e94d85bf9e226532fed01282f71927a',
+    STYLES: CONFIG.LAYER_WMS_EXAMPLE,
+    LAYERS: CONFIG.LAYER_WMS_EXAMPLE,
     //FORMAT_OPTIONS: 'dpi:180',
     //exceptions: 'application/vnd.ogc.se_inimage',
     //SRS: 'EPSG:4326',
@@ -19,7 +21,7 @@ const REQUEST_PARAMS = {
 const params = new URLSearchParams(REQUEST_PARAMS).toString();
 
 const WMSExample = [
-    `https://stable.demo.geonode.org/geoserver/ows?${params}&bbox={bbox-epsg-3857}`,
+    `${CONFIG.BASE_URL_BACKEND}/geoserver/ows?${params}&bbox={bbox-epsg-3857}`,
     ];
 
 export {WMSExample}

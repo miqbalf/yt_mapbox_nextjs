@@ -8,9 +8,10 @@ import { geoJsonExample } from '../data/geojsonExample'
 import { tilesExample } from '../data/tileExample'
 import { WMSExample } from '../data/geoserver/wmsExample'
 
-import { requestWFS } from '@/app/api/wfsRequest'
+import requestWFS from '@/app/api/wfsRequest'
 
 import CONFIG from '../../config'
+import { useEffect, useState } from 'react'
 
 const layerStylePoint = {
     id: 'example_layer',
@@ -27,9 +28,32 @@ const layerStyleWMS = {
     paint : {}
 }
 
-requestWFS()
+const layerStylePolygon = {
+    "id": "example_wfs",
+    "type": "fill",
+    "paint": {
+      "fill-color": "#00ffff"
+    }
+}
+
+const geoJSONConstructor = ''
 
 const MapCanvas = () => {
+
+    const [data, setData ] = useState(null)
+
+    useEffect (async () =>  {
+        const responseData = await requestWFS();
+        setData(responseData)
+
+    }, [] )
+
+    if (!data) {
+        return null
+    }
+
+    console.log(data)
+
     return (
         <Map
             mapboxAccessToken={CONFIG.API_MAPBOX}
@@ -100,6 +124,16 @@ const MapCanvas = () => {
                     paint = {{}}
                     layout={{visibility: 'visible'}}
                  >
+
+                 </Layer>
+            </Source>
+
+            <Source  
+                key = 'example_wfs_source'
+                type = 'geojson'
+                data = {data}
+                >
+                 <Layer {...layerStylePolygon}>
 
                  </Layer>
             </Source>
