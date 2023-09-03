@@ -8,6 +8,8 @@ import { geoJsonExample } from '../data/geojsonExample'
 import { tilesExample } from '../data/tileExample'
 import { WMSExample } from '../data/geoserver/wmsExample'
 
+import { requestWFS } from '@/app/api/wfsRequest'
+
 import CONFIG from '../../config'
 
 const layerStylePoint = {
@@ -24,6 +26,8 @@ const layerStyleWMS = {
     type: 'raster',
     paint : {}
 }
+
+requestWFS()
 
 const MapCanvas = () => {
     return (
