@@ -1,10 +1,7 @@
 import React from 'react'
+import MapCanvas from './components/Map/mapCanvas';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
-
-import MapCanvas from './components/Map/mapCanvas'
-
-export default function Home() {
+export default function Page() {
   return (
   <MapCanvas />
   )

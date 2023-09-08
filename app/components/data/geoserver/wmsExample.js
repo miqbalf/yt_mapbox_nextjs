@@ -1,6 +1,9 @@
 import CONFIG from "@/app/config";
 
-const REQUEST_PARAMS = {
+
+
+const WMSExample = () => {
+  const REQUEST_PARAMS = {
     SERVICE: 'WMS',
     VERSION: '1.3.0',
     REQUEST: 'GetMap',
@@ -16,13 +19,14 @@ const REQUEST_PARAMS = {
     WIDTH: 256,
     HEIGHT: 256,
     TILED: true,
+    //BBOX: `${bbox[0]}, ${bbox[1]}, ${bbox[2]}, ${bbox[3]}`
   };
 
 const params = new URLSearchParams(REQUEST_PARAMS).toString();
-
-const WMSExample = [
+  return [
     `${CONFIG.BASE_URL_BACKEND}/geoserver/ows?${params}&bbox={bbox-epsg-3857}`,
-    ];
+    //`${CONFIG.BASE_URL_BACKEND}/geoserver/ows?${params}`
+    ]};
 
 export {WMSExample}
 
